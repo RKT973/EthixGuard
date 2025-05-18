@@ -51,6 +51,7 @@ Streamlit – for the frontend UI
 
 
 
+
 📂 Folder Structure
 
 ethixguard/
@@ -60,6 +61,7 @@ ethixguard/
 ├── Other required Files
 
 └── README.md               
+
 
 
 
