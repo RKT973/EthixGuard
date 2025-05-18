@@ -52,7 +52,7 @@ Streamlit – for the frontend UI
 
 
 
-📂 Folder Structure
+📂 Folder Structure:
 
 ethixguard/
 
