@@ -68,7 +68,7 @@ def generate_report(biosafety_data, ethics_data):
     # Minimum BSL requirements per research type (from your table, using the lower level for Animal Research)
     min_bsl = {
         "Clinical/Human Subjects": "BSL-2",
-        "Animal Research": "BSL-1",  # Lower of ABSL-1 or ABSL-2
+        "Animal Research": "BSL-2",  
         "Food Production/Safety": "BSL-1",
         "Academic Research/Publication": "Not determined yet"
     }
