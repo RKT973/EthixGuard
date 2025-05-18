@@ -248,7 +248,7 @@ def page_home():
     """)
     
     # Display sample image - using a placeholder since we can't load external images
-    st.image("biosafety.png", caption="Biosafety and ethics compliance are critical for research and production")
+    st.image("biosafety&hazard.png", caption="Biosafety and ethics compliance are critical for research and production")
 
 # Biosafety compliance page
 def page_biosafety():
