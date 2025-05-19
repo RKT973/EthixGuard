@@ -333,119 +333,66 @@ def page_ethics():
     st.title("Ethics Evaluation")
     st.markdown("Complete the following ethics checklist applicable to your research or food production process.")
 
-    # Research type selection with single selection (using selectbox instead of multiselect)
+    # Research type selection
     research_type = st.selectbox(
         "Select the type of research applicable to your project:",
         ["Clinical/Human Subjects", "Animal Research", "Food Production/Safety", "Academic Research/Publication"]
     )
 
-    # Initialize session state for storing ethics answers if not already present
+    # Reset answers when research type changes
+    if "prev_research_type" not in st.session_state:
+        st.session_state.prev_research_type = research_type
+    if st.session_state.prev_research_type != research_type:
+        st.session_state.ethics_answers = {}
+        st.session_state.prev_research_type = research_type
+
+    # Initialize ethics answers
     if "ethics_answers" not in st.session_state:
         st.session_state.ethics_answers = {}
 
-    # Clinical ethics section - outside the form to appear immediately after selection
-    if research_type == "Clinical/Human Subjects":
-        # Containment section
-        st.subheader("Biosafety Containment")
-        st.session_state.ethics_answers["Containment Level"]=st.radio("What containment level is required for your work?", 
-                                       ["BSL-1", "BSL-2", "BSL-3", "BSL-4", "Not determined yet"])
-        st.subheader("Clinical Ethics")
-        
-        st.session_state.ethics_answers["Informed Consent"] = st.radio(
-            "Has informed consent been obtained from all participants?",
-            ["Yes", "No", "Partially", "Not Applicable"]
-        )
-        
-        st.session_state.ethics_answers["Vulnerable Populations"] = st.radio(
-            "Does the research involve vulnerable populations (children, pregnant women, etc.)?",
-            ["Yes", "No"]
-        )
-        
-        if st.session_state.ethics_answers["Vulnerable Populations"] == "Yes":
-            st.session_state.ethics_answers["Special Protections"] = st.radio(
-                "Have special protections been implemented for vulnerable populations?",
-                ["Yes", "No", "Partially"]
-            )
-        else:
-            st.session_state.ethics_answers["Special Protections"] = "Not Applicable"
-        
-        st.session_state.ethics_answers["Privacy Measures"] = st.radio(
-            "Are adequate privacy and confidentiality measures in place?",
-            ["Yes", "No", "Partially"]
-        )
+    # Containment level section (common to all research types)
+    st.subheader("Biosafety Containment")
+    st.session_state.ethics_answers["Containment Level"] = st.radio(
+        "What containment level is required for your work?",
+        ["BSL-1", "BSL-2", "BSL-3", "BSL-4", "Not determined yet"]
+    )
 
-    # Animal ethics section
-    elif research_type == "Animal Research":
-        # Containment section
-        st.subheader("Biosafety Containment")
-        st.session_state.ethics_answers["Containment Level"]=st.radio("What containment level is required for your work?", 
-                                       ["BSL-1", "BSL-2", "BSL-3", "BSL-4", "Not determined yet"])
-        st.subheader("Animal Ethics")
-        st.session_state.ethics_answers["CPCSEA Approval"] = st.radio(
-            "Has CPCSEA approval been obtained for animal research?",
-            ["Yes", "No", "Pending"]
-        )
-        
-        st.session_state.ethics_answers["3Rs Principle"] = st.radio(
-            "Does your protocol follow the 3Rs principle (Replacement, Reduction, Refinement)?",
-            ["Yes", "No", "Partially"]
-        )
-        
-        st.session_state.ethics_answers["Pain Management"] = st.radio(
-            "Are adequate pain management protocols in place?",
-            ["Yes", "No", "Partially", "Not Required"]
-        )
+    # Dynamic question handling using a dictionary
+    research_questions = {
+        "Clinical/Human Subjects": {
+            "Informed Consent": "Has informed consent been obtained from all participants?",
+            "Vulnerable Populations": "Does the research involve vulnerable populations (children, pregnant women, etc.)?",
+            "Special Protections": "Have special protections been implemented for vulnerable populations?",
+            "Privacy Measures": "Are adequate privacy and confidentiality measures in place?"
+        },
+        "Animal Research": {
+            "CPCSEA Approval": "Has CPCSEA approval been obtained for animal research?",
+            "3Rs Principle": "Does your protocol follow the 3Rs principle (Replacement, Reduction, Refinement)?",
+            "Pain Management": "Are adequate pain management protocols in place?"
+        },
+        "Food Production/Safety": {
+            "Ingredient Transparency": "Is there full transparency regarding ingredients and additives?",
+            "Safety Data Availability": "Is all safety data publicly available?",
+            "Environmental Impact Assessment": "Has environmental impact been assessed?"
+        },
+        "Academic Research/Publication": {
+            "Data Integrity": "Is there assurance of data integrity and availability?",
+            "Conflict of Interest Declaration": "Have all conflicts of interest been declared?",
+            "Proper Attribution": "Is proper attribution and citation provided for all sources?"
+        }
+    }
 
-    # Food safety ethics section
-    elif research_type == "Food Production/Safety":
-        # Containment section
-        st.subheader("Biosafety Containment")
-        st.session_state.ethics_answers["Containment Level"]=st.radio("What containment level is required for your work?", 
-                                       ["BSL-1", "BSL-2", "BSL-3", "BSL-4", "Not determined yet"])
-        st.subheader("Food Safety Ethics")
-        st.session_state.ethics_answers["Ingredient Transparency"] = st.radio(
-            "Is there full transparency regarding ingredients and additives?",
-            ["Yes", "No", "Partially"]
-        )
-        
-        st.session_state.ethics_answers["Safety Data Availability"] = st.radio(
-            "Is all safety data publicly available?",
-            ["Yes", "No", "Partially"]
-        )
-        
-        st.session_state.ethics_answers["Environmental Impact Assessment"] = st.radio(
-            "Has environmental impact been assessed?",
-            ["Yes", "No", "Partially"]
-        )
-
-    # Research publication ethics section
-    elif research_type == "Academic Research/Publication":
-        # Containment section
-        st.subheader("Biosafety Containment")
-        st.session_state.ethics_answers["Containment Level"]=st.radio("What containment level is required for your work?", 
-                                       ["BSL-1", "BSL-2", "BSL-3", "BSL-4", "Not determined yet"])
-        st.subheader("Research Publication Ethics")
-        st.session_state.ethics_answers["Data Integrity"] = st.radio(
-            "Is there assurance of data integrity and availability?",
-            ["Yes", "No", "Partially"]
-        )
-        
-        st.session_state.ethics_answers["Conflict of Interest Declaration"] = st.radio(
-            "Have all conflicts of interest been declared?",
-            ["Yes", "No", "Partially", "No Conflicts Exist"]
-        )
-        
-        st.session_state.ethics_answers["Proper Attribution"] = st.radio(
-            "Is proper attribution and citation provided for all sources?",
-            ["Yes", "No", "Partially"]
-        )
+    # Display dynamic questions
+    st.subheader(f"{research_type} Ethics")
+    for key, question in research_questions[research_type].items():
+        options = ["Yes", "No", "Partially"] if key != "Conflict of Interest Declaration" else ["Yes", "No", "Partially", "No Conflicts Exist"]
+        st.session_state.ethics_answers[key] = st.radio(question, options)
 
     # Additional notes
     notes = st.text_area("Additional ethical considerations or notes:", "")
 
-    # Save button (outside of form)
+    # Save responses
     if st.button("Save Ethics Responses"):
-        # Save all answers to main session state
         st.session_state.ethics_data = {
             "Research Type": research_type,
             **st.session_state.ethics_answers,
@@ -453,35 +400,28 @@ def page_ethics():
         }
         st.success("Ethics responses saved! You can now generate your compliance report.")
 
-    # Display current responses if they exist
-    if "ethics_data" in st.session_state and st.session_state.ethics_data:
+    # Display current responses
+    if st.session_state.get("ethics_data"):
         st.subheader("Your Ethics Responses")
         
-        # Filter out Not Applicable responses for cleaner display
-        filtered_data = {k: v for k, v in st.session_state.ethics_data.items() 
-                         if v != "Not Applicable" and k != "Additional Notes"}
+        # Filter and format data for display
+        display_data = {
+            k: v for k, v in st.session_state.ethics_data.items()
+            if k not in ["Additional Notes"] and v not in ["Not Applicable"]
+        }
         
-        # Create a DataFrame for display
-        data = [[k, v] for k, v in filtered_data.items()]
-        df = pd.DataFrame(data, columns=["Question", "Response"])
+        # Create and style DataFrame
+        df = pd.DataFrame(list(display_data.items()), columns=["Question", "Response"])
         
-        # Highlight responses based on compliance
-        def highlight_responses(val):
-            if val == "Yes" or val == "No Conflicts Exist":
-                return "background-color: #c6efce; color: #006100"  # Green for pass
-            elif val == "No":
-                return "background-color: #ffc7ce; color: #9c0006"  # Red for violations
-            elif val == "Partially" or val == "Pending":
-                return "background-color: #ffeb9c; color: #9c6500"  # Yellow for warnings
-            return ""
+        def highlight_rows(row):
+            if row.Response == "Yes":
+                return ['background-color: #e6ffe6'] * len(row)
+            elif row.Response == "No":
+                return ['background-color: #ffcccc'] * len(row)
+            return [''] * len(row)
         
-        # Display styled DataFrame
-        st.dataframe(df.style.map(highlight_responses, subset=["Response"]))
-        
-        # Display additional notes if any
-        if st.session_state.ethics_data["Additional Notes"]:
-            st.subheader("Additional Notes")
-            st.text_area("", st.session_state.ethics_data["Additional Notes"], disabled=True)
+        st.dataframe(df.style.apply(highlight_rows, axis=1))
+
 
 # Report generation page
 def page_report():
