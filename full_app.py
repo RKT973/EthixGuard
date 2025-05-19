@@ -15,7 +15,7 @@ st.set_page_config(
 )
 
 # Define the knowledge base for the chatbot
-knowledge_base = {
+knowledge_base ={
     # Biosafety Questions
     "gmo": "GMOs (Genetically Modified Organisms) require special clearance from the GEAC (Genetic Engineering Approval Committee) in India. You need to obtain permission before any research, testing, or release.",
     "biosafety committee": "An Institutional Biosafety Committee (IBSC) is mandatory for institutions handling genetically engineered organisms. They oversee compliance with guidelines and report to RCGM.",
@@ -23,6 +23,9 @@ knowledge_base = {
     "rcgm": "The Review Committee on Genetic Manipulation (RCGM) under DBT reviews all ongoing research projects involving high-risk category and controlled field experiments.",
     "containment level": "Biosafety containment levels range from BSL-1 (minimal risk) to BSL-4 (dangerous pathogens). Each level requires specific safety equipment, practices, and facility design.",
     "biosafety guidelines": "The Government of India has published comprehensive biosafety guidelines through DBT. These cover rDNA research, large-scale operations, and environmental release of GMOs.",
+    "ibsc": "The Institutional Biosafety Committee (IBSC) is responsible for overseeing biosafety in research institutions. They ensure compliance with guidelines and monitor ongoing projects.",
+    "training": "All personnel involved in handling GMOs must receive appropriate biosafety training. This includes understanding risks, safety practices, and emergency procedures.",
+
     
     # Ethics Questions
     "informed consent": "Informed consent requires fully disclosing research procedures, risks, benefits, and alternatives to participants. Documentation must be maintained and approved by an ethics committee.",
@@ -30,6 +33,9 @@ knowledge_base = {
     "food safety ethics": "Food safety ethics involves transparency about ingredients, additives, preservation methods, and potential allergens. All claims must be backed by scientific evidence.",
     "research ethics": "Research ethics includes honest reporting, proper attribution, data integrity, declaring conflicts of interest, and respecting intellectual property rights.",
     "institutional ethics committee": "An Institutional Ethics Committee (IEC) must review all research involving human subjects, ensuring protection of rights, safety, and well-being of participants.",
+    "cpcsea": "The Committee for the Purpose of Control and Supervision of Experiments on Animals (CPCSEA) is responsible for overseeing animal research in India. Approval is required before starting any animal experiments.",
+    "3rs": "The 3Rs principle stands for Replacement, Reduction, and Refinement. It aims to minimize animal use and suffering in research.",
+
 }
 
 # Function to get response from knowledge base
