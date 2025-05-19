@@ -15,7 +15,11 @@ st.set_page_config(
 )
 
 # Define the knowledge base for the chatbot
+<<<<<<< HEAD
 knowledge_base ={
+=======
+knowledge_base = {
+>>>>>>> a5c51c1af18e28c36b4b913a2155b39526d7122a
     # Biosafety Questions
     "gmo": "GMOs (Genetically Modified Organisms) require special clearance from the GEAC (Genetic Engineering Approval Committee) in India. You need to obtain permission before any research, testing, or release.",
     "biosafety committee": "An Institutional Biosafety Committee (IBSC) is mandatory for institutions handling genetically engineered organisms. They oversee compliance with guidelines and report to RCGM.",
@@ -23,9 +27,12 @@ knowledge_base ={
     "rcgm": "The Review Committee on Genetic Manipulation (RCGM) under DBT reviews all ongoing research projects involving high-risk category and controlled field experiments.",
     "containment level": "Biosafety containment levels range from BSL-1 (minimal risk) to BSL-4 (dangerous pathogens). Each level requires specific safety equipment, practices, and facility design.",
     "biosafety guidelines": "The Government of India has published comprehensive biosafety guidelines through DBT. These cover rDNA research, large-scale operations, and environmental release of GMOs.",
+<<<<<<< HEAD
     "ibsc": "The Institutional Biosafety Committee (IBSC) is responsible for overseeing biosafety in research institutions. They ensure compliance with guidelines and monitor ongoing projects.",
     "training": "All personnel involved in handling GMOs must receive appropriate biosafety training. This includes understanding risks, safety practices, and emergency procedures.",
 
+=======
+>>>>>>> a5c51c1af18e28c36b4b913a2155b39526d7122a
     
     # Ethics Questions
     "informed consent": "Informed consent requires fully disclosing research procedures, risks, benefits, and alternatives to participants. Documentation must be maintained and approved by an ethics committee.",
@@ -33,9 +40,12 @@ knowledge_base ={
     "food safety ethics": "Food safety ethics involves transparency about ingredients, additives, preservation methods, and potential allergens. All claims must be backed by scientific evidence.",
     "research ethics": "Research ethics includes honest reporting, proper attribution, data integrity, declaring conflicts of interest, and respecting intellectual property rights.",
     "institutional ethics committee": "An Institutional Ethics Committee (IEC) must review all research involving human subjects, ensuring protection of rights, safety, and well-being of participants.",
+<<<<<<< HEAD
     "cpcsea": "The Committee for the Purpose of Control and Supervision of Experiments on Animals (CPCSEA) is responsible for overseeing animal research in India. Approval is required before starting any animal experiments.",
     "3rs": "The 3Rs principle stands for Replacement, Reduction, and Refinement. It aims to minimize animal use and suffering in research.",
 
+=======
+>>>>>>> a5c51c1af18e28c36b4b913a2155b39526d7122a
 }
 
 # Function to get response from knowledge base
@@ -74,7 +84,11 @@ def generate_report(biosafety_data, ethics_data):
     # Minimum BSL requirements per research type (from your table, using the lower level for Animal Research)
     min_bsl = {
         "Clinical/Human Subjects": "BSL-2",
+<<<<<<< HEAD
         "Animal Research": "BSL-2",  
+=======
+        "Animal Research": "BSL-1",  # Lower of ABSL-1 or ABSL-2
+>>>>>>> a5c51c1af18e28c36b4b913a2155b39526d7122a
         "Food Production/Safety": "BSL-1",
         "Academic Research/Publication": "Not determined yet"
     }
@@ -333,12 +347,17 @@ def page_ethics():
     st.title("Ethics Evaluation")
     st.markdown("Complete the following ethics checklist applicable to your research or food production process.")
 
+<<<<<<< HEAD
     # Research type selection
+=======
+    # Research type selection with single selection (using selectbox instead of multiselect)
+>>>>>>> a5c51c1af18e28c36b4b913a2155b39526d7122a
     research_type = st.selectbox(
         "Select the type of research applicable to your project:",
         ["Clinical/Human Subjects", "Animal Research", "Food Production/Safety", "Academic Research/Publication"]
     )
 
+<<<<<<< HEAD
     # Reset answers when research type changes
     if "prev_research_type" not in st.session_state:
         st.session_state.prev_research_type = research_type
@@ -387,12 +406,120 @@ def page_ethics():
     for key, question in research_questions[research_type].items():
         options = ["Yes", "No", "Partially"] if key != "Conflict of Interest Declaration" else ["Yes", "No", "Partially", "No Conflicts Exist"]
         st.session_state.ethics_answers[key] = st.radio(question, options)
+=======
+    # Initialize session state for storing ethics answers if not already present
+    if "ethics_answers" not in st.session_state:
+        st.session_state.ethics_answers = {}
+
+    # Clinical ethics section - outside the form to appear immediately after selection
+    if research_type == "Clinical/Human Subjects":
+        # Containment section
+        st.subheader("Biosafety Containment")
+        st.session_state.ethics_answers["Containment Level"]=st.radio("What containment level is required for your work?", 
+                                       ["BSL-1", "BSL-2", "BSL-3", "BSL-4", "Not determined yet"])
+        st.subheader("Clinical Ethics")
+        
+        st.session_state.ethics_answers["Informed Consent"] = st.radio(
+            "Has informed consent been obtained from all participants?",
+            ["Yes", "No", "Partially", "Not Applicable"]
+        )
+        
+        st.session_state.ethics_answers["Vulnerable Populations"] = st.radio(
+            "Does the research involve vulnerable populations (children, pregnant women, etc.)?",
+            ["Yes", "No"]
+        )
+        
+        if st.session_state.ethics_answers["Vulnerable Populations"] == "Yes":
+            st.session_state.ethics_answers["Special Protections"] = st.radio(
+                "Have special protections been implemented for vulnerable populations?",
+                ["Yes", "No", "Partially"]
+            )
+        else:
+            st.session_state.ethics_answers["Special Protections"] = "Not Applicable"
+        
+        st.session_state.ethics_answers["Privacy Measures"] = st.radio(
+            "Are adequate privacy and confidentiality measures in place?",
+            ["Yes", "No", "Partially"]
+        )
+
+    # Animal ethics section
+    elif research_type == "Animal Research":
+        # Containment section
+        st.subheader("Biosafety Containment")
+        st.session_state.ethics_answers["Containment Level"]=st.radio("What containment level is required for your work?", 
+                                       ["BSL-1", "BSL-2", "BSL-3", "BSL-4", "Not determined yet"])
+        st.subheader("Animal Ethics")
+        st.session_state.ethics_answers["CPCSEA Approval"] = st.radio(
+            "Has CPCSEA approval been obtained for animal research?",
+            ["Yes", "No", "Pending"]
+        )
+        
+        st.session_state.ethics_answers["3Rs Principle"] = st.radio(
+            "Does your protocol follow the 3Rs principle (Replacement, Reduction, Refinement)?",
+            ["Yes", "No", "Partially"]
+        )
+        
+        st.session_state.ethics_answers["Pain Management"] = st.radio(
+            "Are adequate pain management protocols in place?",
+            ["Yes", "No", "Partially", "Not Required"]
+        )
+
+    # Food safety ethics section
+    elif research_type == "Food Production/Safety":
+        # Containment section
+        st.subheader("Biosafety Containment")
+        st.session_state.ethics_answers["Containment Level"]=st.radio("What containment level is required for your work?", 
+                                       ["BSL-1", "BSL-2", "BSL-3", "BSL-4", "Not determined yet"])
+        st.subheader("Food Safety Ethics")
+        st.session_state.ethics_answers["Ingredient Transparency"] = st.radio(
+            "Is there full transparency regarding ingredients and additives?",
+            ["Yes", "No", "Partially"]
+        )
+        
+        st.session_state.ethics_answers["Safety Data Availability"] = st.radio(
+            "Is all safety data publicly available?",
+            ["Yes", "No", "Partially"]
+        )
+        
+        st.session_state.ethics_answers["Environmental Impact Assessment"] = st.radio(
+            "Has environmental impact been assessed?",
+            ["Yes", "No", "Partially"]
+        )
+
+    # Research publication ethics section
+    elif research_type == "Academic Research/Publication":
+        # Containment section
+        st.subheader("Biosafety Containment")
+        st.session_state.ethics_answers["Containment Level"]=st.radio("What containment level is required for your work?", 
+                                       ["BSL-1", "BSL-2", "BSL-3", "BSL-4", "Not determined yet"])
+        st.subheader("Research Publication Ethics")
+        st.session_state.ethics_answers["Data Integrity"] = st.radio(
+            "Is there assurance of data integrity and availability?",
+            ["Yes", "No", "Partially"]
+        )
+        
+        st.session_state.ethics_answers["Conflict of Interest Declaration"] = st.radio(
+            "Have all conflicts of interest been declared?",
+            ["Yes", "No", "Partially", "No Conflicts Exist"]
+        )
+        
+        st.session_state.ethics_answers["Proper Attribution"] = st.radio(
+            "Is proper attribution and citation provided for all sources?",
+            ["Yes", "No", "Partially"]
+        )
+>>>>>>> a5c51c1af18e28c36b4b913a2155b39526d7122a
 
     # Additional notes
     notes = st.text_area("Additional ethical considerations or notes:", "")
 
+<<<<<<< HEAD
     # Save responses
     if st.button("Save Ethics Responses"):
+=======
+    # Save button (outside of form)
+    if st.button("Save Ethics Responses"):
+        # Save all answers to main session state
+>>>>>>> a5c51c1af18e28c36b4b913a2155b39526d7122a
         st.session_state.ethics_data = {
             "Research Type": research_type,
             **st.session_state.ethics_answers,
@@ -400,6 +527,7 @@ def page_ethics():
         }
         st.success("Ethics responses saved! You can now generate your compliance report.")
 
+<<<<<<< HEAD
     # Display current responses
     if st.session_state.get("ethics_data"):
         st.subheader("Your Ethics Responses")
@@ -422,6 +550,37 @@ def page_ethics():
         
         st.dataframe(df.style.apply(highlight_rows, axis=1))
 
+=======
+    # Display current responses if they exist
+    if "ethics_data" in st.session_state and st.session_state.ethics_data:
+        st.subheader("Your Ethics Responses")
+        
+        # Filter out Not Applicable responses for cleaner display
+        filtered_data = {k: v for k, v in st.session_state.ethics_data.items() 
+                         if v != "Not Applicable" and k != "Additional Notes"}
+        
+        # Create a DataFrame for display
+        data = [[k, v] for k, v in filtered_data.items()]
+        df = pd.DataFrame(data, columns=["Question", "Response"])
+        
+        # Highlight responses based on compliance
+        def highlight_responses(val):
+            if val == "Yes" or val == "No Conflicts Exist":
+                return "background-color: #c6efce; color: #006100"  # Green for pass
+            elif val == "No":
+                return "background-color: #ffc7ce; color: #9c0006"  # Red for violations
+            elif val == "Partially" or val == "Pending":
+                return "background-color: #ffeb9c; color: #9c6500"  # Yellow for warnings
+            return ""
+        
+        # Display styled DataFrame
+        st.dataframe(df.style.map(highlight_responses, subset=["Response"]))
+        
+        # Display additional notes if any
+        if st.session_state.ethics_data["Additional Notes"]:
+            st.subheader("Additional Notes")
+            st.text_area("", st.session_state.ethics_data["Additional Notes"], disabled=True)
+>>>>>>> a5c51c1af18e28c36b4b913a2155b39526d7122a
 
 # Report generation page
 def page_report():
